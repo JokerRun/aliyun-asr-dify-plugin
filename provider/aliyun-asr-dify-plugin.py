@@ -4,6 +4,7 @@ from dify_plugin import ToolProvider
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 import dashscope
 from dashscope.audio.asr import Transcription
+from dashscope.models import Models
 from http import HTTPStatus
 
 
@@ -21,8 +22,8 @@ class AliyunAsrDifyPluginProvider(ToolProvider):
             # 测试API Key是否有效，调用一个简单的查询
             # 由于我们不能实际上传音频文件进行测试，只能校验API能否被调用
             try:
-                # 尝试调用接口获取模型列表
-                response = dashscope.common.list_models(type_="asr")
+                # 使用Models类的list方法验证API密钥
+                response = Models.list(api_key=api_key)
                 if response.status_code != HTTPStatus.OK:
                     raise ToolProviderCredentialValidationError(f"Failed to validate API Key: {response.message}")
             except Exception as e:

@@ -50,7 +50,7 @@ class TranscribeAudioTool(Tool):
                 params["speaker_count"] = speaker_count
             
             # 提交转录任务
-            yield self.create_text_message(f"正在提交音频转录任务，使用模型: {model}...\n\n")
+            # yield self.create_text_message(f"正在提交音频转录任务，使用模型: {model}...\n\n")
             response = Transcription.async_call(**params)
             print(response)
             if response.status_code != HTTPStatus.OK:
@@ -64,7 +64,7 @@ class TranscribeAudioTool(Tool):
             
             # 等待任务完成
             final_response = Transcription.wait(task_id)
-            yield self.create_text_message(f">>>音频转录已完成:final_response >>> \n {final_response} \n <<<音频转录已完成:final_response <<< ")
+            # yield self.create_text_message(f">>>音频转录已完成:final_response >>> \n {final_response} \n <<<音频转录已完成:final_response <<< ")
             
             if final_response.status_code != HTTPStatus.OK:
                 error_msg = f"转录任务失败: {final_response.message}"
@@ -75,7 +75,7 @@ class TranscribeAudioTool(Tool):
             result = self._format_result(final_response.output, diarization_enabled)
             
             # 返回结果
-            yield self.create_text_message(f">>>转录脚本解析已完成 >>> \n {result} \n <<<转录脚本解析已完成 <<< ")
+            # yield self.create_text_message(f">>>转录脚本解析已完成 >>> \n {result} \n <<<转录脚本解析已完成 <<< ")
             # 返回格式化的纯文本结果
             yield self.create_text_message(result["formatted_transcript"])
             yield self.create_json_message(result)
