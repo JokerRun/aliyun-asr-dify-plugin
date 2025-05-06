@@ -1,0 +1,17 @@
+identity:
+  author: jerry
+  name: aliyun-asr-dify-plugin
+  label:
+    en_US: aliyun-asr-dify-plugin
+    zh_Hans: aliyun-asr-dify-plugin
+    pt_BR: aliyun-asr-dify-plugin
+  description:
+    en_US: aliyun-asr-dify-plugin
+    zh_Hans: aliyun-asr-dify-plugin
+    pt_BR: aliyun-asr-dify-plugin
+  icon: icon.svg
+tools:
+  - tools/aliyun-asr-dify-plugin.yaml
+extra:
+  python:
+    source: provider/aliyun-asr-dify-plugin.py
