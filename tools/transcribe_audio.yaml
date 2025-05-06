@@ -1,0 +1,82 @@
+identity:
+  name: transcribe_audio
+  author: jerry
+  label:
+    en_US: Transcribe Audio
+    zh_Hans: 音频转录
+    pt_BR: Transcrever Áudio
+    ja_JP: 音声文字起こし
+description:
+  human:
+    en_US: Transcribe meeting audio recordings to text using Aliyun ASR service
+    zh_Hans: 使用阿里云语音识别服务将会议录音转录为文本
+    pt_BR: Transcrever gravações de áudio de reuniões para texto usando o serviço Aliyun ASR
+    ja_JP: Aliyun ASRサービスを使用して会議録音を文字に書き起こす
+  llm: Transcribes meeting audio files to text using Aliyun Paraformer ASR service. It can handle speaker diarization to identify different speakers in the conversation. Supports various audio formats including mp3, wav, etc. Audio files must be accessible via URL.
+parameters:
+  - name: file_url
+    type: string
+    required: true
+    label:
+      en_US: Audio File URL
+      zh_Hans: 音频文件URL
+      pt_BR: URL do Arquivo de Áudio
+      ja_JP: 音声ファイルのURL
+    human_description:
+      en_US: The URL of the audio file to transcribe (must be publicly accessible)
+      zh_Hans: 要转录的音频文件的URL（必须可公开访问）
+      pt_BR: O URL do arquivo de áudio para transcrever (deve ser acessível publicamente)
+      ja_JP: 文字起こしする音声ファイルのURL（公開アクセス可能である必要があります）
+    llm_description: The URL of the audio file to transcribe. Must be a publicly accessible URL (HTTP/HTTPS). Supported formats include mp3, wav, m4a, aac, etc.
+    form: llm
+  - name: model
+    type: string
+    required: false
+    default: paraformer-v2
+    label:
+      en_US: ASR Model
+      zh_Hans: 语音识别模型
+      pt_BR: Modelo ASR
+      ja_JP: 音声認識モデル
+    human_description:
+      en_US: The ASR model to use (default is paraformer-v2)
+      zh_Hans: 要使用的语音识别模型（默认为paraformer-v2）
+      pt_BR: O modelo ASR a ser usado (o padrão é paraformer-v2)
+      ja_JP: 使用する音声認識モデル（デフォルトはparaformer-v2）
+    llm_description: The ASR model to use. Options include paraformer-v2 (default, multi-language), paraformer-8k-v2 (for 8kHz audio), etc.
+    form: llm
+  - name: diarization_enabled
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Enable Speaker Diarization
+      zh_Hans: 启用说话人分离
+      pt_BR: Ativar Diarização de Falantes
+      ja_JP: 話者分離を有効にする
+    human_description:
+      en_US: Whether to identify and separate different speakers in the audio
+      zh_Hans: 是否在音频中识别和分离不同的说话人
+      pt_BR: Se deve identificar e separar diferentes falantes no áudio
+      ja_JP: 音声内の異なる話者を識別し分離するかどうか
+    llm_description: Enable speaker diarization to identify and separate different speakers in the audio. When enabled, the transcript will include speaker labels.
+    form: llm
+  - name: speaker_count
+    type: number
+    required: false
+    default: 2
+    label:
+      en_US: Speaker Count
+      zh_Hans: 说话人数量
+      pt_BR: Número de Falantes
+      ja_JP: 話者数
+    human_description:
+      en_US: The expected number of speakers in the audio (used when diarization is enabled)
+      zh_Hans: 音频中预期的说话人数量（在启用说话人分离时使用）
+      pt_BR: O número esperado de falantes no áudio (usado quando a diarização está ativada)
+      ja_JP: 音声内の予想される話者数（話者分離が有効な場合に使用）
+    llm_description: The expected number of speakers in the audio. This parameter is only used when diarization_enabled is set to true. Default is 2.
+    form: llm
+extra:
+  python:
+    source: tools/transcribe_audio.py

@@ -1,117 +1,139 @@
-## User Guide of how to develop a Dify Plugin
+# 阿里云语音识别插件使用指南
 
-Hi there, looks like you have already created a Plugin, now let's get you started with the development!
+欢迎使用阿里云语音识别插件！本指南将帮助您快速上手并充分利用插件功能。
 
-### Choose a Plugin type you want to develop
+## 插件简介
 
-Before start, you need some basic knowledge about the Plugin types, Plugin supports to extend the following abilities in Dify:
-- **Tool**: Tool Providers like Google Search, Stable Diffusion, etc. it can be used to perform a specific task.
-- **Model**: Model Providers like OpenAI, Anthropic, etc. you can use their models to enhance the AI capabilities.
-- **Endpoint**: Like Service API in Dify and Ingress in Kubernetes, you can extend a http service as an endpoint and control its logics using your own code.
+阿里云语音识别插件基于阿里云的Paraformer语音识别技术，专为会议录音转录设计。它能够将各种音频文件转换为高质量的文本脚本，并支持说话人分离功能，帮助您识别不同发言者。
 
-Based on the ability you want to extend, we have divided the Plugin into three types: **Tool**, **Model**, and **Extension**.
+## 前提条件
 
-- **Tool**: It's a tool provider, but not only limited to tools, you can implement an endpoint there, for example, you need both `Sending Message` and `Receiving Message` if you are building a Discord Bot, **Tool** and **Endpoint** are both required.
-- **Model**: Just a model provider, extending others is not allowed.
-- **Extension**: Other times, you may only need a simple http service to extend the functionalities, **Extension** is the right choice for you.
+1. 有效的阿里云Dashscope API密钥
+   - 如果您没有API密钥，请在[阿里云Dashscope控制台](https://dashscope.console.aliyun.com/apiKey)申请
+   - 确保您的账户已开通Paraformer语音识别服务
 
-I believe you have chosen the right type for your Plugin while creating it, if not, you can change it later by modifying the `manifest.yaml` file.
+2. 可公开访问的音频文件
+   - 音频文件必须通过HTTP/HTTPS可访问
+   - 支持的格式包括mp3、wav、m4a、mp4、flac等
 
-### Manifest
+## 配置步骤
 
-Now you can edit the `manifest.yaml` file to describe your Plugin, here is the basic structure of it:
+1. 在Dify平台安装插件后，导航至插件配置页面
+2. 输入您的阿里云Dashscope API密钥
+3. 保存配置
 
-- version(version, required)：Plugin's version
-- type(type, required)：Plugin's type, currently only supports `plugin`, future support `bundle`
-- author(string, required)：Author, it's the organization name in Marketplace and should also equals to the owner of the repository
-- label(label, required)：Multi-language name
-- created_at(RFC3339, required)：Creation time, Marketplace requires that the creation time must be less than the current time
-- icon(asset, required)：Icon path
-- resource (object)：Resources to be applied
-  - memory (int64)：Maximum memory usage, mainly related to resource application on SaaS for serverless, unit bytes
-  - permission(object)：Permission application
-    - tool(object)：Reverse call tool permission
-      - enabled (bool)
-    - model(object)：Reverse call model permission
-      - enabled(bool)
-      - llm(bool)
-      - text_embedding(bool)
-      - rerank(bool)
-      - tts(bool)
-      - speech2text(bool)
-      - moderation(bool)
-    - node(object)：Reverse call node permission
-      - enabled(bool) 
-    - endpoint(object)：Allow to register endpoint permission
-      - enabled(bool)
-    - app(object)：Reverse call app permission
-      - enabled(bool)
-    - storage(object)：Apply for persistent storage permission
-      - enabled(bool)
-      - size(int64)：Maximum allowed persistent memory, unit bytes
-- plugins(object, required)：Plugin extension specific ability yaml file list, absolute path in the plugin package, if you need to extend the model, you need to define a file like openai.yaml, and fill in the path here, and the file on the path must exist, otherwise the packaging will fail.
-  - Format
-    - tools(list[string]): Extended tool suppliers, as for the detailed format, please refer to [Tool Guide](https://docs.dify.ai/plugins/schema-definition/tool)
-    - models(list[string])：Extended model suppliers, as for the detailed format, please refer to [Model Guide](https://docs.dify.ai/plugins/schema-definition/model)
-    - endpoints(list[string])：Extended Endpoints suppliers, as for the detailed format, please refer to [Endpoint Guide](https://docs.dify.ai/plugins/schema-definition/endpoint)
-  - Restrictions
-    - Not allowed to extend both tools and models
-    - Not allowed to have no extension
-    - Not allowed to extend both models and endpoints
-    - Currently only supports up to one supplier of each type of extension
-- meta(object)
-  - version(version, required)：manifest format version, initial version 0.0.1
-  - arch(list[string], required)：Supported architectures, currently only supports amd64 arm64
-  - runner(object, required)：Runtime configuration
-    - language(string)：Currently only supports python
-    - version(string)：Language version, currently only supports 3.12
-    - entrypoint(string)：Program entry, in python it should be main
+## 基本使用
 
-### Install Dependencies
+### 简单转录
 
-- First of all, you need a Python 3.11+ environment, as our SDK requires that.
-- Then, install the dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-- If you want to add more dependencies, you can add them to the `requirements.txt` file, once you have set the runner to python in the `manifest.yaml` file, `requirements.txt` will be automatically generated and used for packaging and deployment.
+要将音频文件转录为文本，只需提供音频文件的URL：
 
-### Implement the Plugin
-
-Now you can start to implement your Plugin, by following these examples, you can quickly understand how to implement your own Plugin:
-
-- [OpenAI](https://github.com/langgenius/dify-plugin-sdks/tree/main/python/examples/openai): best practice for model provider
-- [Google Search](https://github.com/langgenius/dify-plugin-sdks/tree/main/python/examples/google): a simple example for tool provider
-- [Neko](https://github.com/langgenius/dify-plugin-sdks/tree/main/python/examples/neko): a funny example for endpoint group
-
-### Test and Debug the Plugin
-
-You may already noticed that a `.env.example` file in the root directory of your Plugin, just copy it to `.env` and fill in the corresponding values, there are some environment variables you need to set if you want to debug your Plugin locally.
-
-- `INSTALL_METHOD`: Set this to `remote`, your plugin will connect to a Dify instance through the network.
-- `REMOTE_INSTALL_HOST`: The host of your Dify instance, you can use our SaaS instance `https://debug.dify.ai`, or self-hosted Dify instance.
-- `REMOTE_INSTALL_PORT`: The port of your Dify instance, default is 5003
-- `REMOTE_INSTALL_KEY`: You should get your debugging key from the Dify instance you used, at the right top of the plugin management page, you can see a button with a `debug` icon, click it and you will get the key.
-
-Run the following command to start your Plugin:
-
-```bash
-python -m main
+```
+请转录这个音频文件：https://example.com/meeting.mp3
 ```
 
-Refresh the page of your Dify instance, you should be able to see your Plugin in the list now, but it will be marked as `debugging`, you can use it normally, but not recommended for production.
+或者：
 
-### Package the Plugin
-
-After all, just package your Plugin by running the following command:
-
-```bash
-dify-plugin plugin package ./ROOT_DIRECTORY_OF_YOUR_PLUGIN
+```
+请将此链接的会议录音转为文字：https://example.com/meeting.mp3
 ```
 
-you will get a `plugin.difypkg` file, that's all, you can submit it to the Marketplace now, look forward to your Plugin being listed!
+### 使用说话人分离
 
+如果您需要区分不同的发言者，可以启用说话人分离功能：
 
-## User Privacy Policy
+```
+请转录这个会议录音并识别不同的发言者：https://example.com/meeting.mp3
+```
 
-Please fill in the privacy policy of the plugin if you want to make it published on the Marketplace, refer to [PRIVACY.md](PRIVACY.md) for more details.
+您还可以指定预期的发言者数量：
+
+```
+请将此会议录音转录为文本，并识别不同的发言者：https://example.com/conference.mp3，预计有3位发言者
+```
+
+### 指定模型
+
+您可以根据需要指定使用的识别模型：
+
+```
+请使用paraformer-v2模型转录这个英语演讲：https://example.com/speech.mp3
+```
+
+对于电话录音，可以使用专门的8kHz模型：
+
+```
+请使用paraformer-8k-v2模型转录这个电话会议记录：https://example.com/call.mp3
+```
+
+## 高级参数
+
+本插件支持以下高级参数：
+
+| 参数名 | 描述 | 默认值 |
+|--------|------|--------|
+| model | 识别模型，可选值：paraformer-v2, paraformer-8k-v2, paraformer-v1, paraformer-8k-v1, paraformer-mtl-v1 | paraformer-v2 |
+| diarization_enabled | 是否启用说话人分离 | false |
+| speaker_count | 说话人数量，仅在启用说话人分离时有效 | 2 |
+
+## 输出结果说明
+
+转录完成后，您将获得以下格式的结果：
+
+1. **当不启用说话人分离时**：
+   ```
+   [00:00:03 - 00:00:08] 大家好，欢迎参加今天的会议。
+   [00:00:09 - 00:00:15] 我们今天将讨论第二季度的销售计划。
+   ...
+   ```
+
+2. **当启用说话人分离时**：
+   ```
+   说话人 0 [00:00:03]：大家好，欢迎参加今天的会议。
+
+   说话人 1 [00:00:09]：谢谢主持，我们今天将讨论第二季度的销售计划。
+   ...
+   ```
+
+转录结果还包含以下JSON数据：
+- 完整的格式化文本
+- 原始文本（不含说话人标签和时间戳）
+- 句子级别的信息（包括开始时间、结束时间、说话人ID等）
+- 音频总时长
+
+## 最佳实践
+
+1. **选择合适的模型**：
+   - 对于普通会议录音，使用 `paraformer-v2`
+   - 对于电话录音，使用 `paraformer-8k-v2`
+   - 对于多语言场景，使用 `paraformer-v2` 或 `paraformer-mtl-v1`
+
+2. **优化音频文件**：
+   - 确保音频质量良好，噪音较少
+   - 对于长音频（超过2小时），建议分段处理
+   - 如果音频文件过大，可以先压缩或降低采样率
+
+3. **说话人分离建议**：
+   - 设置合理的说话人数量，通常不超过实际参会人数
+   - 说话人分离在音质清晰、发言者声音差异明显时效果更好
+
+## 常见问题
+
+**问：为什么我的音频无法被识别？**  
+答：确保您的音频文件可以通过公网访问，并且URL格式正确。支持的格式包括mp3、wav、m4a等。
+
+**问：转录结果中的说话人标识（说话人0、说话人1）能否更改为真实姓名？**  
+答：当前版本不支持自定义说话人标签。系统会根据声音特征自动分配说话人ID。
+
+**问：有最大音频长度限制吗？**  
+答：是的，音频文件不应超过12小时或2GB。对于超长录音，建议分段处理。
+
+**问：支持哪些语言？**  
+答：paraformer-v2模型支持中文（包含多种方言）、英文、日语、韩语、德语、法语、俄语等多种语言。具体支持的语言因选择的模型而异。
+
+**问：转录需要多长时间？**  
+答：转录时间取决于音频长度和阿里云服务的处理速度。通常，处理时间远短于音频实际时长（数百倍加速）。
+
+## 支持与反馈
+
+如有任何问题或建议，请联系插件作者或通过Dify平台提交反馈。

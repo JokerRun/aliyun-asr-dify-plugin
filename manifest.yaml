@@ -3,16 +3,20 @@ type: plugin
 author: jerry
 name: aliyun-asr-dify-plugin
 label:
-  en_US: aliyun-asr-dify-plugin
-  ja_JP: aliyun-asr-dify-plugin
-  zh_Hans: aliyun-asr-dify-plugin
-  pt_BR: aliyun-asr-dify-plugin
+  en_US: Aliyun ASR
+  ja_JP: Aliyun ASR
+  zh_Hans: 阿里云语音识别
+  pt_BR: Aliyun ASR
+  zh_Hant: 阿里云語音識別
 description:
-  en_US: aliyun-asr-dify-plugin
-  ja_JP: aliyun-asr-dify-plugin
-  zh_Hans: aliyun-asr-dify-plugin
-  pt_BR: aliyun-asr-dify-plugin
+  en_US: Transcribe meeting audio recordings to text using Aliyun Paraformer ASR service with speaker diarization support
+  ja_JP: 話者分離機能付きのAliyun Paraformer ASRサービスを使用して会議の音声録音をテキストに文字起こし
+  zh_Hans: 使用阿里云 Paraformer 语音识别服务将会议录音转录为文本，支持说话人分离
+  pt_BR: Transcreva gravações de áudio de reuniões para texto usando o serviço Aliyun Paraformer ASR com suporte para diarização de locutor
+  zh_Hant: 使用阿里雲 Paraformer 語音識別服務將會議錄音轉錄為文本，支持說話人分離
 icon: icon.svg
+tags:
+  - productivity
 resource:
   memory: 268435456
   permission:

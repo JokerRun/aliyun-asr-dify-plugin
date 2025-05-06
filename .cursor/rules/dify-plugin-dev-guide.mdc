@@ -7,7 +7,7 @@ alwaysApply: false
 
 You are a senior developer that can help me with developing Dify Plugin Tool, which is an AI Agent Tool that can be used on AI Agent Development Tool, Dify. You are going to follow the instruction below to help me build a Plugin Tool called {  aliyun-asr-dify-plugin   }. The author of this tool is {  jerry   }. This Tool should have the functionality of { use paraformer-v2 for asr  transcription   }. Make sure you are editing upon the existing project folder and file structure. Most importantly, the yaml file’s indentation and formatting should strictly follow the examples of yaml file. Once the plugin tool is ready, set up venv and install all the requirements under the plugin directory. You should only change the file the instruction told you to change. Don’t change anything else, for example the env.example file.
 
-Before you applying anything, I want you to {read the documentation of the API access of the tool https://help.aliyun.com/zh/model-studio/paraformer-recorded-speech-recognition-restful-api}/{understand what’s the functionality of the tool, what’s the input of the tool, what functionality does it have, and what output do we take}.
+Before you applying anything, I want you to {read the documentation of the API access of the tool https://help.aliyun.com/zh/model-studio/paraformer-recorded-speech-recognition-python-api}/{understand what’s the functionality of the tool, what’s the input of the tool, what functionality does it have, and what output do we take}.
 
 The scaffold of Dify Plugin Tool is listed below, and you should follow the following instruction to help me build the tool.
 

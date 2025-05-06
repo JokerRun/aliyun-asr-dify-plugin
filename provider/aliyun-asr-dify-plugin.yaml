@@ -2,16 +2,38 @@ identity:
   author: jerry
   name: aliyun-asr-dify-plugin
   label:
-    en_US: aliyun-asr-dify-plugin
-    zh_Hans: aliyun-asr-dify-plugin
-    pt_BR: aliyun-asr-dify-plugin
+    en_US: Aliyun ASR
+    zh_Hans: 阿里云语音识别
+    pt_BR: Aliyun ASR
+    ja_JP: Aliyun ASR
   description:
-    en_US: aliyun-asr-dify-plugin
-    zh_Hans: aliyun-asr-dify-plugin
-    pt_BR: aliyun-asr-dify-plugin
+    en_US: Transcribe meeting audio recordings using Aliyun Paraformer ASR service
+    zh_Hans: 使用阿里云 Paraformer 语音识别服务将会议录音转录为文本
+    pt_BR: Transcrever gravações de áudio de reuniões usando o serviço Aliyun Paraformer ASR
+    ja_JP: Aliyun Paraformer ASRサービスを使用して会議音声録音を文字起こし
   icon: icon.svg
+credentials_for_provider:
+  api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: API Key
+      zh_Hans: API 密钥
+      pt_BR: Chave de API
+      ja_JP: APIキー
+    placeholder:
+      en_US: Please input your Aliyun Dashscope API Key
+      zh_Hans: 请输入您的阿里云 Dashscope API 密钥
+      pt_BR: Por favor, insira sua chave de API Aliyun Dashscope
+      ja_JP: Aliyun Dashscope APIキーを入力してください
+    help:
+      en_US: Get your API Key from Aliyun Dashscope console
+      zh_Hans: 从阿里云 Dashscope 控制台获取您的 API 密钥
+      pt_BR: Obtenha sua chave de API no console do Aliyun Dashscope
+      ja_JP: Aliyun Dashscope コンソールからAPIキーを取得してください
+    url: https://dashscope.console.aliyun.com/apiKey
 tools:
-  - tools/aliyun-asr-dify-plugin.yaml
+  - tools/transcribe_audio.yaml
 extra:
   python:
     source: provider/aliyun-asr-dify-plugin.py
