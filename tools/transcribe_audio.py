@@ -6,6 +6,7 @@ import requests
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.file.file import File
 import dashscope
 from dashscope.audio.asr import Transcription
 from http import HTTPStatus
@@ -16,14 +17,15 @@ class TranscribeAudioTool(Tool):
         将音频文件转录为文本
         """
         # 获取参数
-        file_url = tool_parameters.get("file_url", "")
+        file = tool_parameters.get("file")
+        file_url = file.url if file else ""
         model = tool_parameters.get("model", "paraformer-v2")
         diarization_enabled = tool_parameters.get("diarization_enabled", False)
         speaker_count = tool_parameters.get("speaker_count", 2)
         
         # 验证参数
         if not file_url:
-            yield self.create_text_message("音频文件URL是必需的。")
+            yield self.create_text_message("音频文件是必需的。")
             return
         
         try:

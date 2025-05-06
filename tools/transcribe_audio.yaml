@@ -14,20 +14,20 @@ description:
     ja_JP: Aliyun ASRサービスを使用して会議録音を文字に書き起こす
   llm: Transcribes meeting audio files to text using Aliyun Paraformer ASR service. It can handle speaker diarization to identify different speakers in the conversation. Supports various audio formats including mp3, wav, etc. Audio files must be accessible via URL.
 parameters:
-  - name: file_url
-    type: string
+  - name: file
+    type: file
     required: true
     label:
-      en_US: Audio File URL
-      zh_Hans: 音频文件URL
-      pt_BR: URL do Arquivo de Áudio
-      ja_JP: 音声ファイルのURL
+      en_US: Audio File
+      zh_Hans: 音频文件
+      pt_BR: Arquivo de Áudio
+      ja_JP: 音声ファイル
     human_description:
-      en_US: The URL of the audio file to transcribe (must be publicly accessible)
-      zh_Hans: 要转录的音频文件的URL（必须可公开访问）
-      pt_BR: O URL do arquivo de áudio para transcrever (deve ser acessível publicamente)
-      ja_JP: 文字起こしする音声ファイルのURL（公開アクセス可能である必要があります）
-    llm_description: The URL of the audio file to transcribe. Must be a publicly accessible URL (HTTP/HTTPS). Supported formats include mp3, wav, m4a, aac, etc.
+      en_US: The audio file to transcribe
+      zh_Hans: 要转录的音频文件
+      pt_BR: O arquivo de áudio para transcrever
+      ja_JP: 文字起こしする音声ファイル
+    llm_description: The audio file to transcribe. Supported formats include mp3, wav, m4a, aac, etc.
     form: llm
   - name: model
     type: string
