@@ -145,12 +145,12 @@ class TranscribeAudioTool(Tool):
                     duration = transcript.get('content_duration_in_milliseconds', 0)
                     
                     # 处理句子
-                    if diarization_enabled and 'speaker' in sentences_list[0]:
+                    if diarization_enabled and sentences_list and 'speaker_id' in sentences_list[0]:
                         # 处理带说话人分离的结果
                         current_speaker = None
                         
                         for sentence in sentences_list:
-                            speaker = sentence.get('speaker', '')
+                            speaker = sentence.get('speaker_id', '')
                             text = sentence.get('text', '').strip()
                             start_time = sentence.get('begin_time', 0)
                             end_time = sentence.get('end_time', 0)
@@ -167,7 +167,7 @@ class TranscribeAudioTool(Tool):
                                 formatted_transcript += f"{text} "
                             
                             sentences.append({
-                                "speaker": speaker,
+                                "speaker_id": speaker,
                                 "text": text,
                                 "begin_time": start_time,
                                 "end_time": end_time,
